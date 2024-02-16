@@ -5,7 +5,7 @@ on:
 
 env:
   REPO_URL: https://github.com/ophub/amlogic-s9xxx-openwrt.git
-  PROC_LISTS: s905x3_s905x2_s905x_s905w_s905d_s922x_s912_s905_s905l2_s905l3_s905l3a_s905l3b
+  PROC_LISTS: s905w_s905x_s905mb_s905l3b_s905x2_s905x3_s912_s922x_s922x-ct2000_s922x-reva
   KERNEL_VR: 5.15.148
   KERNEL_REPO: ophub/kernel
   BRANCH: main
