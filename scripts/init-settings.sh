@@ -117,7 +117,11 @@ otherconfig () {
     # fix vnstat 
     mkdir -p /etc/vnstat/
     sed -i 's|DatabaseDir "/var/lib/vnstat"|DatabaseDir "/etc/vnstat"|g' /etc/vnstat.conf
-    
+
+    # fix ttyd
+    sed -i "s|option command '/bin/login'|option command '/bin/login -f root'|g" /etc/config/ttyd
+    /etc/init.d/ttyd restart
+
     # add cron job for modem rakitan
     echo '#auto renew ip lease for modem rakitan' >> /etc/crontabs/root
     echo '#30 3 * * * echo AT+CFUN=4 | atinout - /dev/ttyUSB1 - && ifdown mm && sleep 3 && ifup mm' >> /etc/crontabs/root
