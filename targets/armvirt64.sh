@@ -34,8 +34,8 @@ download_imagebuilder () {
 add_custom_file () {
 ## add walpeper
     mkdir -p ${imagebuilder_path}/files/www/luci-static/alpha/background/
-    wget -P ${imagebuilder_path}/files/www/luci-static/alpha/background/dashboard.png ${make_path}/files/www/luci-static/alpha/background/dashboard.png || error_msg
-    wget -P ${imagebuilder_path}/files/www/luci-static/alpha/background/login.png ${make_path}/files/www/luci-static/alpha/background/login.png || error_msg
+    mv ${make_path}/files/www/luci-static/alpha/background/dashboard.png ${imagebuilder_path}/files/www/luci-static/alpha/background/dashboard.png || error_msg
+    mv ${make_path}/files/www/luci-static/alpha/background/login.png ${imagebuilder_path}/files/www/luci-static/alpha/background/login.png || error_msg
 ## add armvirt64 package
     wget -P ${imagebuilder_path}/packages/ -i ${make_path}/repository/target/armvirt64.txt || error_msg 
 ## add universal package
