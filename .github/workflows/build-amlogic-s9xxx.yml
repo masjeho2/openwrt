@@ -8,7 +8,7 @@ env:
   PROC_LISTS: s905w_s905x_s905mb_s905l3b_s905x2_s905x3_s912_s922x_s922x-ct2000_s922x-reva
   KERNEL_VR: 5.15.148
   KERNEL_REPO: ophub/kernel
-  BRANCH: openwrt:21.02.5
+  BRANCH: main
   TZ: Asia/Jakarta
 
 jobs:
