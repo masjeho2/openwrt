@@ -34,8 +34,8 @@ download_imagebuilder () {
 add_custom_file () {
 ## add walpeper
     mkdir -p ${imagebuilder_path}/files/www/luci-static/alpha/background/
-    mv ${make_path}/files/www/luci-static/alpha/background/dashboard.png ${imagebuilder_path}/files/www/luci-static/alpha/background/dashboard.png || error_msg
-    mv ${make_path}/files/www/luci-static/alpha/background/login.png ${imagebuilder_path}/files/www/luci-static/alpha/background/login.png || error_msg
+    mv -f ${make_path}/files/www/luci-static/alpha/background/dashboard.png ${imagebuilder_path}/files/www/luci-static/alpha/background/dashboard.png || error_msg
+    mv -f ${make_path}/files/www/luci-static/alpha/background/login.png ${imagebuilder_path}/files/www/luci-static/alpha/background/login.png || error_msg
 ## add armvirt64 package
     wget -P ${imagebuilder_path}/packages/ -i ${make_path}/repository/target/armvirt64.txt || error_msg 
 ## add universal package
@@ -50,7 +50,7 @@ build_rootfs () {
     make image PROFILE="Default" PACKAGES="${my_packages}" FILES="files" || error_msg
 ## relocate rootfs
     mkdir -p ${make_path}/amlogic-s9xxx-openwrt/openwrt-armvirt
-    mv ${imagebuilder_path}/bin/targets/${targets}/64/*-default-rootfs.tar.gz ${make_path}/amlogic-s9xxx-openwrt/openwrt-armvirt/
+    mv -f ${imagebuilder_path}/bin/targets/${targets}/64/*-default-rootfs.tar.gz ${make_path}/amlogic-s9xxx-openwrt/openwrt-armvirt/
 }
 
 download_imagebuilder
