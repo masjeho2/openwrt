@@ -119,10 +119,11 @@ otherconfig () {
     echo '#30 3 * * * echo AT+CFUN=4 | atinout - /dev/ttyUSB1 - && ifdown mm && sleep 3 && ifup mm' >> /etc/crontabs/root
     echo '#30 3 * * * ifdown fibocom && sleep 3 && ifup fibocom' >> /etc/crontabs/root
     /etc/init.d/cron restart
-
+    # costume repo
     sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
     echo "src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/generic" >> /etc/opkg/customfeeds.conf
     echo "src/gz custom_arch https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/aarch64_cortex-a53" >> /etc/opkg/customfeeds.conf
+
 
 }
 
