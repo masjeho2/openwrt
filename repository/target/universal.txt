@@ -24,7 +24,7 @@ https://github.com/v1nch3r/ROOterSource2102/releases/download/21.02.5-armvirt/ex
 https://github.com/v1nch3r/ROOterSource2102/releases/download/21.02.5-armvirt/ext-sms_1.000-1_all.ipk
 
 https://github.com/masjeho2/openwrt-passwall/releases/download/4.73-3/luci-19.07_luci-app-passwall_4.73-3_all.ipk
-https://github.com/animegasan/luci-app-ipinfo/releases/download/v2.1/luci-app-ipinfo_2.1_all.ipk
+https://github.com/animegasan/luci-app-ipinfo/releases/download/2.0.1/luci-app-ipinfo_2.0.1-20240110_all.ipk
 https://github.com/animegasan/luci-app-alpha-config/releases/download/v1.1/luci-app-alpha-config_1.1_all.ipk
 https://github.com/animegasan/luci-theme-alpha/releases/download/v3.9.2-beta/luci-theme-alpha_3.9.2-beta-9_all.ipk
 https://github.com/masjeho2/openwrt-packages/releases/download/armvit-21.02/internet-detector_1.2-0_all.ipk
