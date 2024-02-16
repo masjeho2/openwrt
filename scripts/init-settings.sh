@@ -113,6 +113,10 @@ otherconfig () {
 
     # remove dw5821e usb-modeswitch
     sed -i -e '/413c:81d7/,+5d' /etc/usb-mode.json
+
+    # fix vnstat 
+    mkdir -p /etc/vnstat/
+    sed -i 's|DatabaseDir "/var/lib/vnstat"|DatabaseDir "/etc/vnstat"|g' /etc/vnstat.conf
     
     # add cron job for modem rakitan
     echo '#auto renew ip lease for modem rakitan' >> /etc/crontabs/root
