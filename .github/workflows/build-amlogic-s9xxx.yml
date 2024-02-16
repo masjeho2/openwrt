@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
 
 env:
-  REPO_URL: https://github.com/masjeho2/amlogic-s9xxx-openwrt.git
-  PROC_LISTS: s905w_s905x_s905mb_s905l3b_s905x2_s905x3_s912_s922x_s922x-ct2000_s922x-reva
+  REPO_URL: https://github.com/v1nch3r/amlogic-openwrt.git
+  PROC_LISTS: s905x3_s905x2_s905x_s905w_s905d_s922x_s912_s905_s905l2_s905l3_s905l3a_s905l3b
   KERNEL_VR: 5.15.148
   KERNEL_REPO: ophub/kernel
-  BRANCH: main
+  BRANCH: 21.02.5
   TZ: Asia/Jakarta
 
 jobs:
@@ -39,7 +39,7 @@ jobs:
           sudo chmod +x targets/armvirt64.sh
           sudo ./targets/armvirt64.sh
           sudo timedatectl set-timezone "${TZ}"
-          echo "BUILD_TAG=openwrt-${BRANCH}-$(date +"%Y.%m.%d")" >> ${GITHUB_ENV}
+          echo "BUILD_TAG=21.02.5-${BRANCH}-$(date +"%Y.%m.%d")" >> ${GITHUB_ENV}
      
       - name: Repacking
         run: |
