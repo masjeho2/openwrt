@@ -30,4 +30,5 @@ https://github.com/animegasan/luci-theme-alpha/releases/download/v3.9.2-beta/luc
 https://github.com/masjeho2/openwrt-packages/releases/download/armvit-21.02/internet-detector_1.2-0_all.ipk
 https://github.com/masjeho2/openwrt-packages/releases/download/armvit-21.02/luci-app-internet-detector_1.2-0_all.ipk
 https://github.com/nosignals/neko/releases/download/1.1.11-beta/luci-app-neko_1.1.11-beta_all_21_02.ipk
-https://github.com/lrdrdn/my-opkg-repo/blob/21.02/generic/modeminfo-serial-dell_0.3.7-0_all.ipk
+https://github.com/lrdrdn/my-opkg-repo/raw/21.02/generic/modeminfo-serial-dell_0.3.7-0_all.ipk
+https://github.com/lrdrdn/my-opkg-repo/raw/21.02/generic/luci-app-mikhmon_1.6_all.ipk
