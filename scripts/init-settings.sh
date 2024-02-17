@@ -69,7 +69,7 @@ setiface () {
     uci set network.wan2.device='wwan0'
     uci set network.wan3=interface
     uci set network.wan3.proto='dhcp'
-    nuci set network.wan3.device='usb0'
+    uci set network.wan3.device='usb0'
     # Enable WiFi
     uci set wireless.radio0.disabled='0'
     uci set wireless.radio1.disabled='0'
