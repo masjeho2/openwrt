@@ -25,8 +25,8 @@ download_imagebuilder () {
 #    mv -f custom-files/repositories.conf ${imagebuilder_path}
     sed -i "s|CONFIG_TARGET_ROOTFS_PARTSIZE=104|CONFIG_TARGET_ROOTFS_PARTSIZE=800|g" ${imagebuilder_path}/.config || error_msg
     sed -i "s/^option check_signature/#option check_signature/g" ${imagebuilder_path}/repositories.conf || error_msg
-    echo "src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/generic" >> ${imagebuilder_path}/repositories.conf || error_msg
-    echo "src/gz custom_arch https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/aarch64_cortex-a53" >> ${imagebuilder_path}/repositories.conf || error_msg
+    #echo "src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/generic" >> ${imagebuilder_path}/repositories.conf || error_msg
+    #echo "src/gz custom_arch https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/aarch64_cortex-a53" >> ${imagebuilder_path}/repositories.conf || error_msg
 
 
 }
