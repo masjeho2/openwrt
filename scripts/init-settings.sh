@@ -74,7 +74,23 @@ setiface () {
     uci set wireless.radio0.disabled='0'
     uci set wireless.radio1.disabled='0'
     uci commit network
-    
+
+    #fix ttl 65   
+    echo 'WAN3="usb0"' >> /etc/firewall.user
+    echo 'WAN2="wwan0"' >> /etc/firewall.user
+    echo 'WAN1="eth1"' >> /etc/firewall.user
+    echo 'LAN="br-lan"' >> /etc/firewall.user
+    echo 'iptables -t mangle -I POSTROUTING -o $WAN3 -j TTL --ttl-set 65' >> /etc/firewall.user
+    echo 'iptables -t mangle -I POSTROUTING -o $WAN2 -j TTL --ttl-set 65' >> /etc/firewall.user
+    echo 'iptables -t mangle -I POSTROUTING -o $WAN1 -j TTL --ttl-set 65' >> /etc/firewall.user
+    echo 'iptables -t mangle -I POSTROUTING -o $LAN -j TTL --ttl-set 65' >> /etc/firewall.user
+    echo 'iptables -t mangle -I PREROUTING -i $WAN3 -j TTL --ttl-set 65' >> /etc/firewall.user
+    echo 'iptables -t mangle -I PREROUTING -i $WAN2 -j TTL --ttl-set 65' >> /etc/firewall.user
+    echo 'iptables -t mangle -I PREROUTING -i $WAN1 -j TTL --ttl-set 65' >> /etc/firewall.user
+    echo 'iptables -t mangle -I PREROUTING -i $LAN -j TTL --ttl-set 65' >> /etc/firewall.user
+    echo 'net.ipv4.ip_default_ttl=65' >> /etc/sysctl.conf
+    echo 'net.ipv6.ip_default_ttl=65' >> /etc/sysctl.conf
+
     # firewall
     uci add_list firewall.@zone[1].network='wan1'
     uci add_list firewall.@zone[1].network='wan2'
