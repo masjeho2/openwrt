@@ -36,7 +36,7 @@ add_custom_file () {
 }
 
 build_rootfs () {
-    my_packages="$(cat "${make_path}/universal.txt")"
+    my_packages="$(cat "${make_path}/x86_64.txt")"
     cd ${imagebuilder_path}
     make image PROFILE="generic" PACKAGES="${my_packages}" FILES="files" || error_msg
 }
