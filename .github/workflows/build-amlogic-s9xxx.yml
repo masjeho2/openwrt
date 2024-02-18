@@ -8,7 +8,7 @@ env:
   PROC_LISTS: s905x_s905x2
   KERNEL_VR: 5.15.148
   KERNEL_REPO: ophub/kernel
-  BRANCH: 21.02.5
+  BRANCH: 21.02.7
   TZ: Asia/Jakarta
 
 jobs:
