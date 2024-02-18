@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  BRANCH: 21.02.5
+  BRANCH: 21.02.7
   TZ: Asia/Jakarta
 
 jobs:
@@ -30,7 +30,7 @@ jobs:
           sudo chmod +x targets/x86_64.sh
           sudo ./targets/x86_64.sh
           sudo timedatectl set-timezone "${TZ}"
-          echo "BUILD_TAG=VincherWrt-${BRANCH}-$(date +"%Y.%m.%d")" >> ${GITHUB_ENV}
+          echo "BUILD_TAG=x86_64-${BRANCH}-$(date +"%Y.%m.%d")" >> ${GITHUB_ENV}
  
       - name: Upload OpenWrt Firmware to Release
         uses: ncipollo/release-action@main
