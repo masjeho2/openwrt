@@ -12,7 +12,7 @@ clash_meta="https://github.com/djoeni/Clash.Meta/releases/download/Prerelease-WS
 speedtest_repo="https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-aarch64.tgz"
 neofetch_repo="https://raw.githubusercontent.com/dylanaraps/neofetch/master/neofetch"
 #mac80211="https://raw.githubusercontent.com/v1nch3r/openwrt/openwrt-21.02/package/kernel/mac80211/files/lib/wifi/mac80211.sh"
-cloudflared="https://github.com/cloudflare/cloudflared/releases/download/2023.10.0/cloudflared-linux-arm64"
+#cloudflared="https://github.com/cloudflare/cloudflared/releases/download/2023.10.0/cloudflared-linux-arm64"
 
 error_msg() {
     echo -e "${ERROR} ${1}"
@@ -47,8 +47,8 @@ add_custom_file () {
     #wget -P ${imagebuilder_path}/files/lib/wifi/ ${mac80211} || error_msg
     mv -f ${make_path}/files/wirless/mac80211.sh ${imagebuilder_path}/files/lib/wifi/mac80211.sh
     ## add cloudflared
-    mkdir -p ${imagebuilder_path}/files/usr/bin/
-    wget -qO- ${cloudflared} > ${imagebuilder_path}/files/usr/bin/cloudflared || error_msg
+    #mkdir -p ${imagebuilder_path}/files/usr/bin/
+    #wget -qO- ${cloudflared} > ${imagebuilder_path}/files/usr/bin/cloudflared || error_msg
 }
 
 add_clash_core
