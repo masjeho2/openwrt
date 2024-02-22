@@ -118,6 +118,9 @@ otherconfig () {
     # Fix neofetch Permissions
     chmod +x /bin/neofetch
 
+    # fix modemmanager
+    rm -f /usr/lib/ModemManager/connection.d/10-report-down
+
     # Add auto clearcache crontabs
     chmod +x /sbin/clearcache.sh
     echo "0 * * * * /sbin/clearcache.sh" >> /etc/crontabs/root
