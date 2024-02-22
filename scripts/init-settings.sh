@@ -114,7 +114,10 @@ otherconfig () {
     # Fix luci-app-atinout-mod
     chmod +x /usr/bin/luci-app-atinout
     chmod +x /sbin/set_at_port.sh
-
+    
+    # fix modemmanager
+    rm -f /usr/lib/ModemManager/connection.d/10-report-down
+    
     # Fix neofetch Permissions
     chmod +x /bin/neofetch
 

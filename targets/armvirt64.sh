@@ -36,6 +36,9 @@ add_custom_file () {
     mkdir -p ${imagebuilder_path}/files/www/luci-static/alpha/background/
     mv -f ${make_path}/files/www/luci-static/alpha/background/dashboard.png ${imagebuilder_path}/files/www/luci-static/alpha/background/dashboard.png || error_msg
     mv -f ${make_path}/files/www/luci-static/alpha/background/login.png ${imagebuilder_path}/files/www/luci-static/alpha/background/login.png || error_msg
+## add custom files modemmanager
+    mkdir -p ${imagebuilder_path}/files/usr/lib/ModemManager/connection.d/
+    mv -f ${make_path}/files/usr/lib/ModemManager/connection.d/10-report-down-and-reconnect ${imagebuilder_path}/files/usr/lib/ModemManager/connection.d/10-report-down-and-reconnect || error_msg
 ## add armvirt64 package
     wget -P ${imagebuilder_path}/packages/ -i ${make_path}/repository/target/armvirt64.txt || error_msg 
 ## add universal package
