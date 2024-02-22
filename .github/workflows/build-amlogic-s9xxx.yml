@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  REPO_URL: https://github.com/ophub/amlogic-s9xxx-openwrt.git
+  REPO_URL: https://github.com/masjeho2/amlogic-s9xxx-openwrt.git
   PROC_LISTS: s905x_s905x2
   KERNEL_VR: 5.15.148
   KERNEL_REPO: ophub/kernel
