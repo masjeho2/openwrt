@@ -22,10 +22,8 @@ https://github.com/masjeho2/ROOterSource2102/releases/download/21.02.5-armvirt/e
 https://github.com/masjeho2/ROOterSource2102/releases/download/21.02.5-armvirt/ext-rooter-basic_4.500-1_all.ipk
 https://github.com/masjeho2/ROOterSource2102/releases/download/21.02.5-armvirt/ext-sms_1.000-1_all.ipk
 
-https://download1527.mediafire.com/6gbjikpd4q1gvfzFXBkckUeowZ371rxyi7QxA-nrid5P9z_gzuQGkU4_yr07QnWX3JUahJnaeyn9yaRj53k2DpafURIKu_xO0HV2KJ8LWBPNwiugC6xkt9EpBlshydMAdnhJKhVakIAqeq88gerhkT-RcrQ1SHcGLW5YheqJ9LfVkw/q4rk94c9kagimi0/luci-app-tinyfm_2.6-php7_all.ipk
-https://download1654.mediafire.com/1kp8gqox6yzgkEWZ9ZLohpH5UqssuGBe0TgHvfMs4HFPJQ9ceYSiGkAB0p-jF3d-Ye_QB_97Loc3j9W4c_noy-eV8wIB09jiVPrI7kAjizqr5yGy3zOoZ2ITOaQe0ONs8_kJ8GbJVnZOb5DiHoYDGZVuYJudJnfsLKbU2fA7SZ7brg/nzmpp4a254ni8c2/luci-app-openclash_0.45.121-beta_all_core.ipk
-
-
+https://github.com/v1nch3r/openwrt-packages/releases/download/generic/luci-app-tinyfm_1.2_all.ipk
+https://github.com/vernesong/OpenClash/releases/download/v0.45.121-beta/luci-app-openclash_0.45.121-beta_all.ipk
 https://github.com/xiaorouji/openwrt-passwall/releases/download/4.73-3/luci-19.07_luci-app-passwall_4.73-3_all.ipk
 https://github.com/animegasan/luci-app-ipinfo/releases/download/2.0.1/luci-app-ipinfo_2.0.1-20240110_all.ipk
 https://github.com/animegasan/luci-app-alpha-config/releases/download/v1.1/luci-app-alpha-config_1.1_all.ipk
