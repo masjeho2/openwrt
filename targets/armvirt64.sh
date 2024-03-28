@@ -42,8 +42,8 @@ add_custom_file () {
 ## add armvirt64 package
     wget -P ${imagebuilder_path}/packages/ -i ${make_path}/repository/target/armvirt64.txt || error_msg
     ## add custom luci-app
-    mv -f ${make_path}/ipk/luci-app-openclash_0.45.121-beta_all_core.ipk ${imagebuilder_path}/packages/luci-app-openclash_0.45.121-beta_all_core.ipk
-    mv -f ${make_path}/ipk/luci-app-tinyfm_2.6-php7_all.ipk ${imagebuilder_path}/packages/luci-app-tinyfm_2.6-php7_all.ipk 
+    #mv -f ${make_path}/ipk/luci-app-openclash_0.45.121-beta_all_core.ipk ${imagebuilder_path}/packages/luci-app-openclash_0.45.121-beta_all_core.ipk
+    #mv -f ${make_path}/ipk/luci-app-tinyfm_2.6-php7_all.ipk ${imagebuilder_path}/packages/luci-app-tinyfm_2.6-php7_all.ipk 
 ## add universal package
     wget -P ${imagebuilder_path}/packages/ -i ${make_path}/repository/target/universal.txt || error_msg
 ## load custom
