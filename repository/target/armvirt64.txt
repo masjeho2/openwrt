@@ -1,5 +1,5 @@
 
-https://github.com/xiaorouji/openwrt-passwall/releases/download/4.76-1/passwall_packages_ipk_aarch64_cortex-a53.zip
+https://github.com/xiaorouji/openwrt-passwall/releases/download/4.76-1/passwall_packages_ipk_aarch64_generic.zip
 
 https://github.com/lrdrdn/my-opkg-repo/raw/main/generic/luci-app-amlogic_3.1.197_all.ipk
-https://github.com/lrdrdn/my-opkg-repo/raw/main/aarch64_cortex-a53/atinout_0.9.1_aarch64_cortex-a53.ipk
+https://github.com/lrdrdn/my-opkg-repo/raw/main/aarch64_generic/atinout_0.9.1_aarch64_generic.ipk
