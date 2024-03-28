@@ -75,21 +75,7 @@ setiface () {
     uci set wireless.radio1.disabled='0'
     uci commit network
 
-    #fix ttl 65   
-    echo 'WAN3="usb0"' >> /etc/firewall.user
-    echo 'WAN2="wwan0"' >> /etc/firewall.user
-    echo 'WAN1="eth1"' >> /etc/firewall.user
-    echo 'LAN="br-lan"' >> /etc/firewall.user
-    echo 'iptables -t mangle -I POSTROUTING -o $WAN3 -j TTL --ttl-set 65' >> /etc/firewall.user
-    echo 'iptables -t mangle -I POSTROUTING -o $WAN2 -j TTL --ttl-set 65' >> /etc/firewall.user
-    echo 'iptables -t mangle -I POSTROUTING -o $WAN1 -j TTL --ttl-set 65' >> /etc/firewall.user
-    echo 'iptables -t mangle -I POSTROUTING -o $LAN -j TTL --ttl-set 65' >> /etc/firewall.user
-    echo 'iptables -t mangle -I PREROUTING -i $WAN3 -j TTL --ttl-set 65' >> /etc/firewall.user
-    echo 'iptables -t mangle -I PREROUTING -i $WAN2 -j TTL --ttl-set 65' >> /etc/firewall.user
-    echo 'iptables -t mangle -I PREROUTING -i $WAN1 -j TTL --ttl-set 65' >> /etc/firewall.user
-    echo 'iptables -t mangle -I PREROUTING -i $LAN -j TTL --ttl-set 65' >> /etc/firewall.user
-    echo 'net.ipv4.ip_default_ttl=65' >> /etc/sysctl.conf
-    echo 'net.ipv6.ip_default_ttl=65' >> /etc/sysctl.conf
+
 
     # firewall
     uci add_list firewall.@zone[1].network='wan1'
@@ -148,8 +134,8 @@ otherconfig () {
     /etc/init.d/cron restart
     # costume repo
     sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
-    echo "#src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/generic" >> /etc/opkg/customfeeds.conf
-    echo "#src/gz custom_arch https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/$(cat /etc/os-release | grep OPENWRT_ARCH | awk -F '"' '{print $2}')" >> /etc/opkg/customfeeds.conf
+    echo "#src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/main/generic" >> /etc/opkg/customfeeds.conf
+    echo "#src/gz custom_arch https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/main/$(cat /etc/os-release | grep OPENWRT_ARCH | awk -F '"' '{print $2}')" >> /etc/opkg/customfeeds.conf
 
 
 }

@@ -8,10 +8,10 @@ imagebuilder_path="${make_path}/${openwrt_dir}"
 
 # targets
 releases="$(cat "${make_path}/openwrt-version.txt")"
-targets="armvirt"
+targets="armsr"
 
 # repository
-imagebuilder_repo="https://downloads.openwrt.org/releases/${releases}/targets/${targets}/64/openwrt-imagebuilder-${releases}-${targets}-64.Linux-x86_64.tar.xz"
+imagebuilder_repo="https://downloads.openwrt.org/releases/${releases}/targets/${targets}/armv8/openwrt-imagebuilder-${releases}-${targets}-armv8.Linux-x86_64.tar.xz"
 
 error_msg() {
     echo -e "${ERROR} ${1}"
@@ -41,9 +41,7 @@ add_custom_file () {
     mv -f ${make_path}/files/usr/lib/ModemManager/connection.d/10-report-down-and-reconnect ${imagebuilder_path}/files/usr/lib/ModemManager/connection.d/10-report-down-and-reconnect || error_msg
 ## add armvirt64 package
     wget -P ${imagebuilder_path}/packages/ -i ${make_path}/repository/target/armvirt64.txt || error_msg
-    ## add custom luci-app
-    #mv -f ${make_path}/ipk/luci-app-openclash_0.45.121-beta_all_core.ipk ${imagebuilder_path}/packages/luci-app-openclash_0.45.121-beta_all_core.ipk
-    #mv -f ${make_path}/ipk/luci-app-tinyfm_2.6-php7_all.ipk ${imagebuilder_path}/packages/luci-app-tinyfm_2.6-php7_all.ipk 
+    
 ## add universal package
     wget -P ${imagebuilder_path}/packages/ -i ${make_path}/repository/target/universal.txt || error_msg
 ## load custom
