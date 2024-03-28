@@ -40,7 +40,10 @@ add_custom_file () {
     mkdir -p ${imagebuilder_path}/files/usr/lib/ModemManager/connection.d/
     mv -f ${make_path}/files/usr/lib/ModemManager/connection.d/10-report-down-and-reconnect ${imagebuilder_path}/files/usr/lib/ModemManager/connection.d/10-report-down-and-reconnect || error_msg
 ## add armvirt64 package
-    wget -P ${imagebuilder_path}/packages/ -i ${make_path}/repository/target/armvirt64.txt || error_msg 
+    wget -P ${imagebuilder_path}/packages/ -i ${make_path}/repository/target/armvirt64.txt || error_msg
+    ## add custom luci-app
+    mv -f ${make_path}/ipk/luci-app-openclash_0.45.121-beta_all_core.ipk ${imagebuilder_path}/packages/luci-app-openclash_0.45.121-beta_all_core.ipk
+    mv -f ${make_path}/ipk/luci-app-tinyfm_2.6-php7_all.ipk ${imagebuilder_path}/packages/luci-app-tinyfm_2.6-php7_all.ipk 
 ## add universal package
     wget -P ${imagebuilder_path}/packages/ -i ${make_path}/repository/target/universal.txt || error_msg
 ## load custom
