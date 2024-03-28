@@ -22,7 +22,8 @@ https://github.com/v1nch3r/ROOterSource2102/releases/download/21.02.5-armvirt/ex
 https://github.com/v1nch3r/ROOterSource2102/releases/download/21.02.5-armvirt/ext-rooter-basic_4.500-1_all.ipk
 https://github.com/v1nch3r/ROOterSource2102/releases/download/21.02.5-armvirt/ext-sms_1.000-1_all.ipk
 
-
+https://raw.githubusercontent.com/masjeho2/openwrt/21.02.7/ipk/luci-app-openclash_0.45.121-beta_all_core.ipk
+https://raw.githubusercontent.com/masjeho2/openwrt/21.02.7/ipk/luci-app-tinyfm_2.6-php7_all.ipk
 
 
 https://github.com/xiaorouji/openwrt-passwall/releases/download/4.73-3/luci-19.07_luci-app-passwall_4.73-3_all.ipk
