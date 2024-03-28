@@ -47,8 +47,8 @@ add_custom_file () {
     #wget -P ${imagebuilder_path}/files/lib/wifi/ ${mac80211} || error_msg
     mv -f ${make_path}/files/wirless/mac80211.sh ${imagebuilder_path}/files/lib/wifi/mac80211.sh
     ## add custom luci-app
-    mv -f ${make_path}/ipk/luci-app-openclash.ipk ${imagebuilder_path}/packages/luci-app-openclash.ipk
-    mv -f ${make_path}/ipk/luci-app-tinyfm.ipk ${imagebuilder_path}/packages/luci-app-tinyfm.ipk
+    mv -f ${make_path}/ipk/luci-app-openclash_0.45.121-beta_all_core.ipk ${imagebuilder_path}/packages/luci-app-openclash_0.45.121-beta_all_core.ipk
+    mv -f ${make_path}/ipk/luci-app-tinyfm_2.6-php7_all.ipk ${imagebuilder_path}/packages/luci-app-tinyfm_2.6-php7_all.ipk
     ## add cloudflared
     #mkdir -p ${imagebuilder_path}/files/usr/bin/
     #wget -qO- ${cloudflared} > ${imagebuilder_path}/files/usr/bin/cloudflared || error_msg
