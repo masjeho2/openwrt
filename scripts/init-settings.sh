@@ -31,6 +31,8 @@ fi
 # remove huawei me909s usb-modeswitch
 sed -i -e '/12d1:15c1/,+5d' /etc/usb-mode.json
 
+# remove dw5821e usb-modeswitch
+sed -i -e '/413c:81d7/,+5d' /etc/usb-mode.json
 # Remove modemmanager tty
 if [ -f "/etc/hotplug.d/tty/25-modemmanager-tty" ]; then
     rm /etc/hotplug.d/tty/25-modemmanager-tty
