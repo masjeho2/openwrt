@@ -75,6 +75,20 @@ setiface () {
     uci set wireless.radio1.disabled='0'
     uci commit network
 
+    # TTL 65
+    cat << 'EOF' > /etc/nftables.d/11-ttl-65.nft
+    chain mangle_postrouting_ttl65 {
+        type filter hook postrouting priority 300; policy accept;
+        ip ttl set 65
+    }
+    chain mangle_prerouting_ttl65 {
+        type filter hook prerouting priority 300; policy accept;
+        ip ttl set 65
+    }
+EOF
+
+
+
 
 
     # firewall
@@ -136,6 +150,30 @@ otherconfig () {
     sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
     echo "#src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/main/generic" >> /etc/opkg/customfeeds.conf
     echo "#src/gz custom_arch https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/main/$(cat /etc/os-release | grep OPENWRT_ARCH | awk -F '"' '{print $2}')" >> /etc/opkg/customfeeds.conf
+
+    
+    #
+    root_password="masjeho26"
+    lan_ip_address="192.168.2.1"
+    #
+    # pppoe_username=""
+    # pppoe_password=""
+
+    # log potential errors
+    exec >/tmp/setup.log 2>&1
+
+    if [ -n "$root_password" ]; then
+      (echo "$root_password"; sleep 1; echo "$root_password") | passwd > /dev/null
+    fi
+
+    # Configure LAN
+    # More options: https://openwrt.org/docs/guide-user/base-system/basic-networking
+    if [ -n "$lan_ip_address" ]; then
+      uci set network.lan.ipaddr="$lan_ip_address"
+      uci commit network
+    fi
+
+    
 
 
 }
