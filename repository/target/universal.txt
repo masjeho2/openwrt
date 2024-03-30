@@ -20,7 +20,7 @@ https://github.com/lrdrdn/my-opkg-repo/raw/main/generic/luci-app-diskman_v0.2.13
 
 
 
-https://github.com/masjeho2/openwrt/raw/23.05.3/ipk/luci-app-tinyfm_2.6-php7_all.ipk
+
 https://github.com/masjeho2/openwrt/raw/23.05.3/ipk/luci-app-openclash_0.45.121-beta_all_core.ipk
 
 
