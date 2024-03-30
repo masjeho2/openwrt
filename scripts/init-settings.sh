@@ -14,7 +14,7 @@ uci -q commit watchcat
 # Set theme
 #uci -q set luci.main.mediaurlbase='/luci-static/bootstrap'
 #! grep -q "material" /etc/config/luci ||uci -q set luci.main.mediaurlbase='/luci-static/material'
-! grep -q "argon" /etc/config/luci || uci -q set luci.main.mediaurlbase='/luci-static/argon'
+! grep -q "alpha" /etc/config/luci || uci -q set luci.main.mediaurlbase='/luci-static/alpha'
 uci -q commit luci
 
 if [ -f "/etc/config/argon" ]; then
