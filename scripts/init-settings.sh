@@ -228,12 +228,12 @@ if [ -f "/usr/lib/lua/luci/controller/zerotier.lua" ]; then
 fi
 
 # Move tiny file manager
-if [ -f "/usr/share/luci/menu.d/luci-app-tinyfilemanager.json" ]; then
-	sed -i -e '/"admin\/nas": {/,+7d' /usr/share/luci/menu.d/luci-app-tinyfilemanager.json
-	sed -i 's|/nas/|/system/|g' /usr/share/luci/menu.d/luci-app-tinyfilemanager.json
-	uci -q add_list tinyfilemanager.@main[0].auth_users='root:$2y$10$TLasyNswvi/Y1v7tz8C8N.a6LKnM4gMDn70A9w76nWICzVoaS0B1G'
-	uci -q commit tinyfilemanager
-fi
+#if [ -f "/usr/share/luci/menu.d/luci-app-tinyfilemanager.json" ]; then
+#	sed -i -e '/"admin\/nas": {/,+7d' /usr/share/luci/menu.d/luci-app-tinyfilemanager.json
+#	sed -i 's|/nas/|/system/|g' /usr/share/luci/menu.d/luci-app-tinyfilemanager.json
+#	uci -q add_list tinyfilemanager.@main[0].auth_users='root:$2y$10$TLasyNswvi/Y1v7tz8C8N.a6LKnM4gMDn70A9w76nWICzVoaS0B1G'
+#	uci -q commit tinyfilemanager
+#fi
 
 # Fix Openclash
 sed -i "s|option ifname 'utun'|option device 'utun'|" /etc/config/network
