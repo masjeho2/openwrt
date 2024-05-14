@@ -6,7 +6,7 @@
 wlan_name="OpenWrt"
 wlan_password="12345678"
 #
-root_password="260196"
+root_password="123456"
 lan_ip_address="192.168.2.1"
 #
 # pppoe_username=""
