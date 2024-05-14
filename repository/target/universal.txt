@@ -30,6 +30,5 @@ https://github.com/animegasan/luci-theme-alpha/releases/download/v3.9.2-beta/luc
 https://github.com/lrdrdn/my-opkg-repo/raw/main/generic/internet-detector_1.0-3_all.ipk
 https://github.com/lrdrdn/my-opkg-repo/raw/main/generic/luci-app-internet-detector_1.0-1_all.ipk
 https://github.com/lrdrdn/my-opkg-repo/raw/main/generic/luci-app-mikhmon_1.6_all.ipk
-https://github.com/lrdrdn/my-opkg-repo/raw/main/generic/luci-app-adguardhome_220512.49736_all.ipk
-https://github.com/lrdrdn/my-opkg-repo/raw/main/generic/luci-app-netmon_1.4_all.ipk
-https://github.com/lrdrdn/my-opkg-repo/raw/main/generic/luci-app-tinyfm_2.6_all.ipk
+
+
