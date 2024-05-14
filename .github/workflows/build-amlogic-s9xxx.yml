@@ -6,7 +6,7 @@ on:
 env:
   REPO_URL: https://github.com/masjeho2/amlogic-s9xxx-openwrt.git
   PROC_LISTS: s905x_s905x2
-  KERNEL_VR: 5.15.148
+  KERNEL_VR: 5.15.158
   KERNEL_REPO: ophub/kernel
   BRANCH: 23.05.2
   TZ: Asia/Jakarta
