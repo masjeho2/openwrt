@@ -1,5 +1,47 @@
 #!/bin/sh
 
+# Beware! This script will be in /rom/etc/uci-defaults/ as part of the image.
+# Uncomment lines to apply:
+#
+wlan_name="OpenWrt"
+wlan_password="12345678"
+#
+root_password="260196"
+lan_ip_address="192.168.2.1"
+#
+# pppoe_username=""
+# pppoe_password=""
+
+# log potential errors
+exec >/tmp/setup.log 2>&1
+
+if [ -n "$root_password" ]; then
+  (echo "$root_password"; sleep 1; echo "$root_password") | passwd > /dev/null
+fi
+
+# Configure LAN
+# More options: https://openwrt.org/docs/guide-user/base-system/basic-networking
+if [ -n "$lan_ip_address" ]; then
+  uci set network.lan.ipaddr="$lan_ip_address"
+  uci commit network
+fi
+
+# Configure WLAN
+# More options: https://openwrt.org/docs/guide-user/network/wifi/basic#wi-fi_interfaces
+if [ -n "$wlan_name" -a -n "$wlan_password" -a ${#wlan_password} -ge 8 ]; then
+  uci set wireless.@wifi-device[0].disabled='0'
+  uci set wireless.@wifi-iface[0].encryption='psk2'
+  uci set wireless.@wifi-iface[0].ssid="$wlan_name"
+  uci set wireless.@wifi-iface[0].key="$wlan_password"
+  if grep -q 'radio1' /etc/config/wireless; then
+    uci set wireless.@wifi-device[1].disabled='0'
+    uci set wireless.@wifi-iface[1].encryption='psk2'
+    uci set wireless.@wifi-iface[1].ssid="$wlan_name 5G"
+    uci set wireless.@wifi-iface[1].key="$wlan_password"
+  fi
+  uci commit wireless
+fi
+
 ## fix upload php
 php_path="/etc/php.ini"
 phpfix () {
@@ -7,7 +49,7 @@ phpfix () {
     sed -i "s|upload_max_filesize = 2M|upload_max_filesize = 2048M|g" ${php_path}
 }
 
-## fix downlad index.php
+## fix download index.php
 phpindexfix () {
 	rm -f /tmp/luci-indexcache
 	rm -f /tmp/luci-modulecache/*
@@ -17,20 +59,13 @@ phpindexfix () {
 	chmod -R 755 /www/tinyfm/*
 	chmod -R 755 /www/tinyfm/assets/*
 	[ ! -d /www/tinyfm/rootfs ] && ln -s / /www/tinyfm/rootfs
-	# Autofix download index.php, index.html
 	if ! grep -q ".php=/usr/bin/php-cgi" /etc/config/uhttpd; then
-		echo -e "  helmilog : system not using php-cgi, patching php config ..."
-		logger "  helmilog : system not using php-cgi, patching php config..."
 		uci set uhttpd.main.ubus_prefix='/ubus'
 		uci set uhttpd.main.interpreter='.php=/usr/bin/php-cgi'
 		uci set uhttpd.main.index_page='cgi-bin/luci'
 		uci add_list uhttpd.main.index_page='index.html'
 		uci add_list uhttpd.main.index_page='index.php'
 		uci commit uhttpd
-		echo -e "  helmilog : patching system with php configuration done ..."
-		echo -e "  helmilog : restarting some apps ..."
-		logger "  helmilog : patching system with php configuration done..."
-		logger "  helmilog : restarting some apps..."
 		/etc/init.d/uhttpd restart
 	fi
 	[ -d /usr/lib/php8 ] && [ ! -d /usr/lib/php ] && ln -sf /usr/lib/php8 /usr/lib/php
@@ -55,12 +90,11 @@ patchuiopenclash () {
 headerpath="/usr/lib/lua/luci/view/admin_status/index.htm"
 hideheader () {
     sed -i "9d" ${headerpath}
-    sed -i "9i <!-- <h2 name=content><%:Status%></h2> -->" ${path}
+    sed -i "9i <!-- <h2 name=content><%:Status%></h2> -->" ${headerpath}
 }
 
 ## set interface
 setiface () {
-    # iface
     uci set network.wan1=interface
     uci set network.wan1.proto='dhcp'
     uci set network.wan1.device='eth1'
@@ -70,25 +104,22 @@ setiface () {
     uci set network.wan3=interface
     uci set network.wan3.proto='dhcp'
     uci set network.wan3.device='usb0'
-    # Enable WiFi
     uci set wireless.radio0.disabled='0'
     uci set wireless.radio1.disabled='0'
     uci commit network
 
-    # TTL 65
-	cat << 'EOF' > /etc/nftables.d/11-ttl-65.nft
-	chain mangle_postrouting_ttl65 {
-	      type filter hook postrouting priority 300; policy accept;
- 	counter ip ttl set 65 
-	}
+    cat << 'EOF' > /etc/nftables.d/11-ttl-65.nft
+    chain mangle_postrouting_ttl65 {
+          type filter hook postrouting priority 300; policy accept;
+          counter ip ttl set 65 
+    }
 
-	chain mangle_prerouting_ttl65 {
-	      type filter hook prerouting priority 300; policy accept;
-	 	counter ip ttl set 65 
-	}
+    chain mangle_prerouting_ttl65 {
+          type filter hook prerouting priority 300; policy accept;
+          counter ip ttl set 65 
+    }
 EOF
 
-    # firewall
     uci add_list firewall.@zone[1].network='wan1'
     uci add_list firewall.@zone[1].network='wan2'
     uci add_list firewall.@zone[1].network='wan3'
@@ -99,84 +130,53 @@ EOF
 otherconfig () {
     uci set system.@system[0].timezone='WIB-7'
     uci set system.@system[0].zonename='Asia/Jakarta'
-
-    # Set argon as default theme
     uci set argon.@global[0].mode='light'
     uci set luci.main.mediaurlbase='/luci-static/alpha'
-
-    # Set Hostname to VincherWrt
     uci set system.@system[0].hostname='Mas-Jeho'
     uci commit system
 
-    # Fix luci-app-atinout-mod
     chmod +x /usr/bin/luci-app-atinout
     chmod +x /sbin/set_at_port.sh
-    
-    # fix modemmanager
     rm -f /usr/lib/ModemManager/connection.d/10-report-down
-    
-    # Fix neofetch Permissions
     chmod +x /bin/neofetch
-
-    # Add auto clearcache crontabs
     chmod +x /sbin/clearcache.sh
     echo "0 * * * * /sbin/clearcache.sh" >> /etc/crontabs/root
-    
-    # Fix cloudflared permissions
     chmod +x /usr/bin/cloudflared
-    # remove huawei me909s usb-modeswitch
     sed -i -e '/12d1:15c1/,+5d' /etc/usb-mode.json
-
-    # remove dw5821e usb-modeswitch
     sed -i -e '/413c:81d7/,+5d' /etc/usb-mode.json
-
-    # fix vnstat 
     mkdir -p /etc/vnstat/
     sed -i 's|DatabaseDir "/var/lib/vnstat"|DatabaseDir "/etc/vnstat"|g' /etc/vnstat.conf
-
-    # fix ttyd
     sed -i "s|option command '/bin/login'|option command '/bin/login -f root'|g" /etc/config/ttyd
     /etc/init.d/ttyd restart
-
-    # add cron job for modem rakitan
     echo '#auto renew ip lease for modem rakitan' >> /etc/crontabs/root
     echo '#30 3 * * * echo AT+CFUN=4 | atinout - /dev/ttyUSB1 - && ifdown mm && sleep 3 && ifup mm' >> /etc/crontabs/root
     echo '#30 3 * * * ifdown fibocom && sleep 3 && ifup fibocom' >> /etc/crontabs/root
     /etc/init.d/cron restart
-    # costume repo
     sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
     echo "src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/main/generic" >> /etc/opkg/customfeeds.conf
     echo "src/gz custom_arch https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/main/$(cat /etc/os-release | grep OPENWRT_ARCH | awk -F '"' '{print $2}')" >> /etc/opkg/customfeeds.conf
 
-	# Set Atcommands
-	if [ -f "/etc/config/atcommands" ]; then
-		uci -q set atcommands.@atcommands[0]=atcommands
-		uci -q set atcommands.@atcommands[0].set_port='/dev/ttyUSB1'
-		uci -q commit atcommands
+    if [ -f "/etc/config/atcommands" ]; then
+        uci -q set atcommands.@atcommands[0]=atcommands
+        uci -q set atcommands.@atcommands[0].set_port='/dev/ttyUSB1'
+        uci -q commit atcommands
 
-	    cat << 'EOF' > /etc/modem/atcommands.user
-	AT;AT
-	ATI;ATI
-	Debug Info;AT^DEBUG?
-	Temperature;AT^TEMP?
-	Voltase;AT+VOLT
-	CA Info;AT^CA_INFO?
-	Display Selected Band;AT^SLBAND?
-	Lock Band 1;AT^SLBAND=LTE,2,1
-	Lock Band 3;AT^SLBAND=LTE,2,3
-	Lock Band 8;AT^SLBAND=LTE,2,8
-	Lock Band 40;AT^SLBAND=LTE,2,40
-	Lock Band 1 & 3;AT^SLBAND=LTE,2,1,3
-	Lock Band 3 & 8;AT^SLBAND=LTE,2,3,8
-	Lock Band 3 & 40;AT^SLBAND=LTE,2,3,40
-	Lock Band 1, 3 & 8;AT^SLBAND=LTE,2,1,3,8
-	Reset Selected Band;AT^SLBAND
-	Lock LTE Only;AT^SLMODE=1,30
-	LTE CAT Info;AT^GETLTECAT?
-	Restart Modem;AT^RESET
+        cat << 'EOF' > /etc/modem/atcommands.user
+    AT;AT
+    ATI;ATI
+    Debug Info;AT^DEBUG?
+    Temperature;AT^TEMP?
+    Voltase;AT+VOLT
+    CA Info;AT^CA_INFO?
+    Display Selected Band;AT^SLBAND?
+    Lock Band 1;AT^SLBAND=LTE,2,1
+    Lock Band 3;AT^SLBAND=LTE,2,3
+    Lock Band 8;AT^SLBAND=LTE,2,8
+    Lock Band 40;AT^SLBAND=LTE,2,40
+    Lock Band 1 & 3;AT^SLBAND=LTE,2,1,3
+    Lock Band 3 & 8;AT^SLBAND=LTE,2,3,8
 EOF
-	fi
-
+    fi
 }
 
 phpfix
@@ -185,5 +185,3 @@ patchuiopenclash
 hideheader
 setiface
 otherconfig
-
-exit 0
