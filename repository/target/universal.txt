@@ -21,7 +21,7 @@ https://github.com/lrdrdn/my-opkg-repo/raw/main/generic/luci-app-diskman_v0.2.13
 
 
 
-https://github.com/masjeho2/openwrt/raw/23.05.3/ipk/luci-app-openclash_0.45.121-beta_all_core.ipk
+https://github.com/vernesong/OpenClash/releases/download/v0.46.003-beta/luci-app-openclash_0.46.003-beta_all.ipk
 
 
 https://github.com/animegasan/luci-app-ipinfo/releases/download/2.0.1/luci-app-ipinfo_2.0.1-20240110_all.ipk
