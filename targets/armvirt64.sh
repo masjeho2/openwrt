@@ -26,6 +26,8 @@ download_imagebuilder () {
     sed -i "s|CONFIG_TARGET_ROOTFS_PARTSIZE=104|CONFIG_TARGET_ROOTFS_PARTSIZE=800|g" ${imagebuilder_path}/.config || error_msg
     sed -i "s/^option check_signature/#option check_signature/g" ${imagebuilder_path}/repositories.conf || error_msg
     sed -i "s/^CONFIG_MODULE_DEFAULT_libustream-openssl=y/#CONFIG_MODULE_DEFAULT_libustream-openssl=y/g" ${imagebuilder_path}/.config|| error_msg
+    sed -i "s/^CONFIG_DEFAULT_libustream-openssl=y/#CONFIG_DEFAULT_libustream-openssl=y/g" ${imagebuilder_path}/.config|| error_msg
+    sed -i "s/^CONFIG_PACKAGE_libustream-openssl=y/#CONFIG_PACKAGE_libustream-openssl=y/g" ${imagebuilder_path}/.config|| error_msg
 
    # echo "src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/main/generic" >> ${imagebuilder_path}/repositories.conf || error_msg
    # echo "src/gz custom_arch https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/main/aarch64_generic" >> ${imagebuilder_path}/repositories.conf || error_msg
