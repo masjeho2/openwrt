@@ -156,6 +156,7 @@ otherconfig () {
     echo "#src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/main/generic" >> /etc/opkg/customfeeds.conf
     echo "#src/gz custom_arch https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/main/$(cat /etc/os-release | grep OPENWRT_ARCH | awk -F '"' '{print $2}')" >> /etc/opkg/customfeeds.conf
 
+    rm  -r /etc/modem/atcommands.user
     if [ -f "/etc/config/atcommands" ]; then
         uci -q set atcommands.@atcommands[0]=atcommands
         uci -q set atcommands.@atcommands[0].set_port='/dev/ttyUSB1'
