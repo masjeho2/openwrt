@@ -1,5 +1,47 @@
 #!/bin/sh
 
+# Beware! This script will be in /rom/etc/uci-defaults/ as part of the image.
+# Uncomment lines to apply:
+#
+wlan_name="OpenWrt"
+wlan_password="12345678"
+#
+root_password="123456"
+lan_ip_address="192.168.2.1"
+#
+# pppoe_username=""
+# pppoe_password=""
+
+# log potential errors
+exec >/tmp/setup.log 2>&1
+
+if [ -n "$root_password" ]; then
+  (echo "$root_password"; sleep 1; echo "$root_password") | passwd > /dev/null
+fi
+
+# Configure LAN
+# More options: https://openwrt.org/docs/guide-user/base-system/basic-networking
+if [ -n "$lan_ip_address" ]; then
+  uci set network.lan.ipaddr="$lan_ip_address"
+  uci commit network
+fi
+
+# Configure WLAN
+# More options: https://openwrt.org/docs/guide-user/network/wifi/basic#wi-fi_interfaces
+if [ -n "$wlan_name" -a -n "$wlan_password" -a ${#wlan_password} -ge 8 ]; then
+  uci set wireless.@wifi-device[0].disabled='0'
+  uci set wireless.@wifi-iface[0].encryption='psk2'
+  uci set wireless.@wifi-iface[0].ssid="$wlan_name"
+  uci set wireless.@wifi-iface[0].key="$wlan_password"
+  if grep -q 'radio1' /etc/config/wireless; then
+    uci set wireless.@wifi-device[1].disabled='0'
+    uci set wireless.@wifi-iface[1].encryption='psk2'
+    uci set wireless.@wifi-iface[1].ssid="$wlan_name 5G"
+    uci set wireless.@wifi-iface[1].key="$wlan_password"
+  fi
+  uci commit wireless
+fi
+
 ## fix upload php
 php_path="/etc/php.ini"
 phpfix () {
