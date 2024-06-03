@@ -162,7 +162,7 @@ otherconfig () {
         uci -q set atcommands.@atcommands[0].set_port='/dev/ttyUSB1'
         uci -q commit atcommands
 
-        cat << 'EOF' > /etc/modem/atcommands.user
+    cat << 'EOF' > /etc/modem/atcommands.user
     AT;AT
     ATI;ATI
     Debug Info;AT^DEBUG?
