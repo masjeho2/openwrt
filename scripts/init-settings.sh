@@ -109,7 +109,6 @@ setiface () {
     uci set network.wan1.device='usb1'
     uci set network.wan1.metric='10'
     uci set network.wan1.dns_metric='1'
-
     uci set network.wan2=interface
     uci set network.wan2.proto='modemmanager'
     uci set network.wan2.device='/sys/devices/platform/soc/ffe09000.usb/ff500000.usb/xhci-hcd.3.auto/usb1/1-1/1-1.2'
@@ -118,7 +117,6 @@ setiface () {
     uci set network.wan2.iptype='ipv4'
     uci set network.wan2.metric='30'
     uci set network.wan2.dns_metric='1'
-
     uci set network.wan3=interface
     uci set network.wan3.proto='dhcp'
     uci set network.wan3.device='usb0'
@@ -205,22 +203,7 @@ otherconfig () {
     sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
     echo "#src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/generic" >> /etc/opkg/customfeeds.conf
     echo "#src/gz custom_arch https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/$(cat /etc/os-release | grep OPENWRT_ARCH | awk -F '"' '{print $2}')" >> /etc/opkg/customfeeds.conf
-    cat << 'EOF' > /etc/modem/atcommands.user
-    AT;AT
-    ATI;ATI
-    Debug Info;AT^DEBUG?
-    Temperature;AT^TEMP?
-    Voltase;AT+VOLT
-    CA Info;AT^CA_INFO?
-    Display Selected Band;AT^SLBAND?
-    Lock Band 1;AT^SLBAND=LTE,2,1
-    Lock Band 3;AT^SLBAND=LTE,2,3
-    Lock Band 8;AT^SLBAND=LTE,2,8
-    Lock Band 40;AT^SLBAND=LTE,2,40
-    Lock Band 1 & 3;AT^SLBAND=LTE,2,1,3
-    Lock Band 3 & 8;AT^SLBAND=LTE,2,3,8
-EOF
-    fi
+    
 
 }
 
