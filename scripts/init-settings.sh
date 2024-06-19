@@ -190,20 +190,20 @@ otherconfig () {
     sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
     echo "#src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/generic" >> /etc/opkg/customfeeds.conf
     echo "#src/gz custom_arch https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/$(cat /etc/os-release | grep OPENWRT_ARCH | awk -F '"' '{print $2}')" >> /etc/opkg/customfeeds.conf
-    cat << 'EOF' > /etc/config/atcommands.use
-    AT;AT
-    ATI;ATI
-    Debug Info;AT^DEBUG?
-    Temperature;AT^TEMP?
-    Voltase;AT+VOLT
-    CA Info;AT^CA_INFO?
-    Display Selected Band;AT^SLBAND?
-    Lock Band 1;AT^SLBAND=LTE,2,1
-    Lock Band 3;AT^SLBAND=LTE,2,3
-    Lock Band 8;AT^SLBAND=LTE,2,8
-    Lock Band 40;AT^SLBAND=LTE,2,40
-    Lock Band 1 & 3;AT^SLBAND=LTE,2,1,3
-    Lock Band 3 & 8;AT^SLBAND=LTE,2,3,8
+    cat << 'EOF' > /etc/config/atcommands.user
+AT;AT
+ATI;ATI
+Debug Info;AT^DEBUG?
+Temperature;AT^TEMP?
+Voltase;AT+VOLT
+CA Info;AT^CA_INFO?
+Display Selected Band;AT^SLBAND?
+Lock Band 1;AT^SLBAND=LTE,2,1
+Lock Band 3;AT^SLBAND=LTE,2,3
+Lock Band 8;AT^SLBAND=LTE,2,8
+Lock Band 40;AT^SLBAND=LTE,2,40
+Lock Band 1 & 3;AT^SLBAND=LTE,2,1,3
+Lock Band 3 & 8;AT^SLBAND=LTE,2,3,8
 EOF
 
 }
