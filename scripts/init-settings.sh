@@ -191,10 +191,9 @@ otherconfig () {
     echo "#src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/generic" >> /etc/opkg/customfeeds.conf
     echo "#src/gz custom_arch https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/21.02/$(cat /etc/os-release | grep OPENWRT_ARCH | awk -F '"' '{print $2}')" >> /etc/opkg/customfeeds.conf
     cat << 'EOF' > /etc/config/atcommands.user
-AT;AT
-ATI;ATI
+Ati;AT
 Debug Info;AT^DEBUG?
-Temperature;AT^TEMP?
+Temperature;AT+TEMP
 Voltase;AT+VOLT
 CA Info;AT^CA_INFO?
 Display Selected Band;AT^SLBAND?
@@ -204,6 +203,15 @@ Lock Band 8;AT^SLBAND=LTE,2,8
 Lock Band 40;AT^SLBAND=LTE,2,40
 Lock Band 1 & 3;AT^SLBAND=LTE,2,1,3
 Lock Band 3 & 8;AT^SLBAND=LTE,2,3,8
+Lock Band 3 & 40;AT^SLBAND=LTE,2,3,40
+Lock Band 1, 3 & 8;AT^SLBAND=LTE,2,1,3,8,40
+Reset Selected Band;AT^SLBAND
+Enable CA;AT^CA_ENABLE=0
+Disable CA;AT^CA_ENABLE=1
+Lock LTE Only;AT^SLMODE=1,30
+LTE CAT Info;AT^GETLTECAT?
+Restart Modem;AT^RESET
+Scann Cell;AT+VZWRSRP?
 EOF
 
 }
