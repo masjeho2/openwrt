@@ -11,7 +11,7 @@ releases="$(cat "${make_path}/openwrt-version.txt")"
 targets="armsr"
 
 # repository
-imagebuilder_repo="https://downloads.immortalwrt.org/releases/${releases}/targets/${targets}/armv8/openwrt-imagebuilder-${releases}-${targets}-armv8.Linux-x86_64.tar.xz"
+imagebuilder_repo="https://downloads.immortalwrt.org/releases/${releases}/targets/${targets}/armv8/immortalwrt-imagebuilder-${releases}-${targets}-armv8.Linux-x86_64.tar.xz"
 
 error_msg() {
     echo -e "${ERROR} ${1}"
