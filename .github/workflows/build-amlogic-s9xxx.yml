@@ -13,7 +13,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
 
     steps:
@@ -22,7 +22,7 @@ jobs:
 
       - name: Initialization environment
         run: |
-          echo "::group::System Clean & Update"
+          echo "::group::System Initialization"
           sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android 2>/dev/null
           sudo -E apt-get -y update
           sudo -E apt-get -y install pigz
@@ -33,85 +33,75 @@ jobs:
 
       - name: Cloning Source
         run: |
-          echo "--------------------------------------"
-          echo "DEBUG: Mulai Cloning dari $REPO_URL"
-          echo "--------------------------------------"
-          
+          df -hT $PWD
+          echo "DEBUG: Cloning $REPO_URL ..."
           git clone --depth 1 $REPO_URL
           
-          # DEBUG: Cek apakah folder berhasil dibuat
-          FOLDER_NAME=$(basename $REPO_URL .git)
-          if [ -d "$FOLDER_NAME" ]; then
-             echo "DEBUG: Folder '$FOLDER_NAME' ditemukan."
-             echo "DEBUG: Isi folder root:"
-             ls -F
+          # Debug: Cek apakah folder terbuat dengan benar
+          if [ -d "amlogic-s9xxx-openwrt" ]; then
+             echo "DEBUG: Folder clone berhasil dibuat."
           else
-             echo "::error::Gagal Clone! Folder tidak ditemukan."
+             echo "::error::Gagal Clone! Folder amlogic-s9xxx-openwrt tidak ditemukan."
              exit 1
           fi
 
-      - name: Building (Debug Check)
+      - name: Building (With Debug Logic)
         run: |
-          # Pindah ke folder
+          # 1. Masuk direktori
           cd amlogic-s9xxx-openwrt
           
-          echo "--------------------------------------"
-          echo "DEBUG INFO: Posisi saat ini: $(pwd)"
-          echo "DEBUG INFO: Isi folder ini:"
-          ls -F
-          echo "--------------------------------------"
+          echo "----------------------------------------------------"
+          echo "DEBUG: Memeriksa keberadaan script targets/armvirt64.sh"
+          echo "DEBUG: Posisi folder saat ini: $(pwd)"
+          echo "----------------------------------------------------"
 
-          # CEK 1: Apakah folder targets ada?
-          if [ ! -d "targets" ]; then
-             echo "::error title=Folder Hilang::Folder 'targets/' tidak ditemukan di dalam repo ini!"
-             echo "::notice::Repo ini mungkin hanya alat Repack (bukan source build), atau struktur folder berbeda."
+          # 2. Cek apakah file targets/armvirt64.sh ADA?
+          if [ -f "targets/armvirt64.sh" ]; then
+             echo "DEBUG: Script ditemukan. Menjalankan..."
+             sudo chmod +x targets/armvirt64.sh
+             sudo ./targets/armvirt64.sh
+          else
+             # JIKA ERROR, TAMPILKAN PENYEBABNYA
+             echo "::error title=Script Hilang::File 'targets/armvirt64.sh' TIDAK DITEMUKAN di dalam repository ini."
+             
+             echo "----------------------------------------------------"
+             echo "DEBUGGING ISI FOLDER (Bukti bahwa file tidak ada):"
+             echo "----------------------------------------------------"
+             ls -R
+             
+             echo "::notice::Jika list di atas tidak menunjukkan folder 'targets', berarti Anda salah menggunakan REPO_URL."
              exit 1
           fi
-
-          # CEK 2: Apakah script armvirt64.sh ada?
-          if [ ! -f "targets/armvirt64.sh" ]; then
-             echo "::error title=Script Hilang::File 'targets/armvirt64.sh' tidak ditemukan!"
-             echo "::group::Isi folder targets (untuk diagnosa):"
-             ls -R targets/
-             echo "::endgroup::"
-             exit 1
-          fi
-
-          # Jika semua oke, jalankan
-          echo "DEBUG: Menjalankan script build..."
-          sudo chmod +x targets/armvirt64.sh
-          sudo ./targets/armvirt64.sh
           
           sudo timedatectl set-timezone "${TZ}"
           echo "BUILD_TAG=openwrt-${BRANCH}-$(date +"%Y.%m.%d")" >> ${GITHUB_ENV}
 
-      - name: Repacking (Debug Check)
+      - name: Repacking (With Debug Logic)
         run: |
           cd amlogic-s9xxx-openwrt/
           
-          # CEK: Apakah script make ada?
-          if [ ! -f "make" ]; then
-             echo "::error title=File Make Hilang::Script 'make' tidak ditemukan untuk proses repacking!"
-             echo "DEBUG: Isi folder saat ini:"
-             ls -la
-             exit 1
-          fi
-
-          echo "DEBUG: Menjalankan Repacking..."
-          sudo chmod +x make
-          sudo ./make -b $PROC_LISTS -k $KERNEL_VR -r $KERNEL_REPO -a true
-          
-          # Validasi Output
-          if ls out/*.img.gz 1> /dev/null 2>&1; then
-             echo "DEBUG: File Image berhasil dibuat!"
-             ls -lh out/
-             echo "PACKAGED_STATUS=success" >> $GITHUB_ENV
+          # Cek file make
+          if [ -f "make" ]; then
+             sudo chmod +x make
+             sudo ./make -b $PROC_LISTS -k $KERNEL_VR -r $KERNEL_REPO -a true
+             
+             # Cek hasil output image
+             if ls out/*.img.gz 1> /dev/null 2>&1; then
+                echo "PACKAGED_STATUS=success" >> $GITHUB_ENV
+                echo "DEBUG: File Image ditemukan:"
+                ls -lh out/
+             else
+                echo "::error::Repack selesai tapi file .img.gz tidak terbentuk di folder out/"
+                ls -R out/
+                exit 1
+             fi
           else
-             echo "::error title=Build Gagal::Proses selesai tapi tidak ada file .img.gz di folder out/"
+             echo "::error title=Make Hilang::File 'make' tidak ditemukan! Gagal Repack."
+             ls -F
              exit 1
           fi
-
-          # Buat Release Note
+          
+          # Buat body file untuk rilis
           echo "Build Information:" > ../release_body.txt
           echo "- Kernel: $KERNEL_VR" >> ../release_body.txt
           echo "- Date: $(date)" >> ../release_body.txt
