@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
-        
+
       - name: Initialization environment
         run: |
           sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android 2>/dev/null
@@ -28,7 +28,7 @@ jobs:
           sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
-        
+
       - name: Cloning Source
         run: |
           df -hT $PWD
@@ -36,16 +36,34 @@ jobs:
 
       - name: Building
         run: |
-          sudo chmod +x targets/armvirt64.sh
-          sudo ./targets/armvirt64.sh
+          # FIX: Masuk ke direktori sebelum eksekusi
+          cd amlogic-s9xxx-openwrt
+          
+          if [ -f "targets/armvirt64.sh" ]; then
+            sudo chmod +x targets/armvirt64.sh
+            sudo ./targets/armvirt64.sh
+          else
+            echo "Script armvirt64.sh tidak ditemukan!"
+            exit 1
+          fi
+          
           sudo timedatectl set-timezone "${TZ}"
           echo "BUILD_TAG=openwrt-${BRANCH}-$(date +"%Y.%m.%d")" >> ${GITHUB_ENV}
-     
+
       - name: Repacking
         run: |
-          chmod +x amlogic-s9xxx-openwrt/make
-          cd amlogic-s9xxx-openwrt/ && sudo ./make -b $PROC_LISTS -k $KERNEL_VR -r $KERNEL_REPO -a true
- 
+          cd amlogic-s9xxx-openwrt/
+          sudo chmod +x make
+          sudo ./make -b $PROC_LISTS -k $KERNEL_VR -r $KERNEL_REPO -a true
+          
+          # FIX: Set status sukses untuk trigger upload
+          echo "PACKAGED_STATUS=success" >> $GITHUB_ENV
+          
+          # FIX: Buat body file untuk rilis
+          echo "Build Information:" > ../release_body.txt
+          echo "- Kernel: $KERNEL_VR" >> ../release_body.txt
+          echo "- Date: $(date)" >> ../release_body.txt
+
       - name: Upload OpenWrt Firmware to Release
         uses: ncipollo/release-action@main
         if: ${{ env.PACKAGED_STATUS }} == 'success' && !cancelled()
