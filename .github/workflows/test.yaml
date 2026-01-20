@@ -1,0 +1,57 @@
+name: Build Amlogic s9xxx test
+
+on:
+  workflow_dispatch:
+
+env:
+  REPO_URL: https://github.com/masjeho2/amlogic-s9xxx-openwrt.git
+  PROC_LISTS: s905x_s905x2
+  KERNEL_VR: 6.6.28
+  KERNEL_REPO: ophub/kernel
+  BRANCH: 21.02.7
+  TZ: Asia/Jakarta
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        
+      - name: Initialization environment
+        run: |
+          sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android 2>/dev/null
+          sudo -E apt-get -y update
+          sudo -E apt-get -y install pigz
+          sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
+          sudo -E apt-get -y autoremove --purge
+          sudo -E apt-get clean
+        
+      - name: Cloning Source
+        run: |
+          df -hT $PWD
+          git clone --depth 1 $REPO_URL
+
+      - name: Building
+        run: |
+          sudo chmod +x targets/armvirt64.sh
+          sudo ./targets/armvirt64.sh
+          sudo timedatectl set-timezone "${TZ}"
+          echo "BUILD_TAG=openwrt-${BRANCH}-$(date +"%Y.%m.%d")" >> ${GITHUB_ENV}
+     
+      - name: Repacking
+        run: |
+          chmod +x amlogic-s9xxx-openwrt/make
+          cd amlogic-s9xxx-openwrt/ && sudo ./make -b $PROC_LISTS -k $KERNEL_VR -r $KERNEL_REPO -a true
+ 
+      - name: Upload OpenWrt Firmware to Release
+        uses: ncipollo/release-action@main
+        if: ${{ env.PACKAGED_STATUS }} == 'success' && !cancelled()
+        with:
+          tag: ${{ env.BUILD_TAG }}
+          artifacts: "amlogic-s9xxx-openwrt/out/*.img.gz,amlogic-s9xxx-openwrt/openwrt-armvirt/*.tar.gz"
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          bodyFile: release_body.txt
