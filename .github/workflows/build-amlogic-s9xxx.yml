@@ -13,7 +13,9 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    # UBAH DISINI: Menggunakan Ubuntu 22.04
+    runs-on: ubuntu-22.04
+    
     if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
 
     steps:
@@ -36,14 +38,14 @@ jobs:
 
       - name: Building
         run: |
-          # FIX: Masuk ke direktori sebelum eksekusi
+          # FIX: Masuk ke folder hasil clone
           cd amlogic-s9xxx-openwrt
           
           if [ -f "targets/armvirt64.sh" ]; then
             sudo chmod +x targets/armvirt64.sh
             sudo ./targets/armvirt64.sh
           else
-            echo "Script armvirt64.sh tidak ditemukan!"
+            echo "::error::Script targets/armvirt64.sh tidak ditemukan!"
             exit 1
           fi
           
@@ -52,16 +54,22 @@ jobs:
 
       - name: Repacking
         run: |
-          cd amlogic-s9xxx-openwrt/
-          sudo chmod +x make
-          sudo ./make -b $PROC_LISTS -k $KERNEL_VR -r $KERNEL_REPO -a true
+          # FIX: Pastikan masuk direktori lagi
+          cd amlogic-s9xxx-openwrt
           
-          # FIX: Set status sukses untuk trigger upload
-          echo "PACKAGED_STATUS=success" >> $GITHUB_ENV
-          
-          # FIX: Buat body file untuk rilis
+          if [ -f "make" ]; then
+             sudo chmod +x make
+             sudo ./make -b $PROC_LISTS -k $KERNEL_VR -r $KERNEL_REPO -a true
+             echo "PACKAGED_STATUS=success" >> $GITHUB_ENV
+          else
+             echo "::error::File 'make' tidak ditemukan!"
+             exit 1
+          fi
+
+          # Buat file body untuk rilis agar tidak error saat upload
           echo "Build Information:" > ../release_body.txt
-          echo "- Kernel: $KERNEL_VR" >> ../release_body.txt
+          echo "- Base: OpenWrt ${BRANCH}" >> ../release_body.txt
+          echo "- Kernel: ${KERNEL_VR}" >> ../release_body.txt
           echo "- Date: $(date)" >> ../release_body.txt
 
       - name: Upload OpenWrt Firmware to Release
